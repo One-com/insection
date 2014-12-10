@@ -1,0 +1,28 @@
+{
+  "name": "insection",
+  "version": "1.0.0",
+  "description": "A data structure for storing intervals",
+  "main": "lib/insection.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/One-com/insection"
+  },
+  "keywords": [
+    "range",
+    "interval",
+    "intersection"
+  ],
+  "author": "Sune Simonsen <sss@one.com>",
+  "license": "Standard 3-clause BSD",
+  "bugs": {
+    "url": "https://github.com/One-com/insection/issues"
+  },
+  "homepage": "https://github.com/One-com/insection",
+  "devDependencies": {
+    "mocha": "2.0.1",
+    "unexpected": "5.0.0-beta24"
+  }
+}
