@@ -1,7 +1,7 @@
 {
   "name": "insection",
   "version": "1.0.0",
-  "description": "A data structure for storing intervals",
+  "description": "A data structure for storing number intervals",
   "main": "lib/insection.js",
   "scripts": {
     "test": "mocha"
