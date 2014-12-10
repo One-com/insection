@@ -1,3 +1,4 @@
+/*global describe, it, beforeEach*/
 var Insection = require('../lib/Insection.js');
 var expect = require('unexpected').clone()
     .addType({
