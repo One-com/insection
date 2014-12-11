@@ -55,8 +55,8 @@ describe("Insection", function () {
     });
 
     describe("add", function () {
-        it("add(3,4) is an alias for add(Insection.interval('[',3,4,']'))", function () {
-            insection.add(3, 4);
+        it("add(3,4,'foo') is an alias for add(Insection.interval('[',3,4,']'),'foo')", function () {
+            insection.add(3, 4, 'foo');
             expect(insection, 'to contain', Insection.interval('[', 3, 4, ']'));
         });
 
@@ -70,8 +70,8 @@ describe("Insection", function () {
             var start = interval.start;
             var end = interval.end;
             var endString = interval.endString;
-            it("add(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ") is an alias for add(" + interval.toString(true) + ")", function () {
-                insection.add(startString, start, end, endString);
+            it("add(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ",'foo') is an alias for add(" + interval.toString(true) + ",'foo')", function () {
+                insection.add(startString, start, end, endString, 'foo');
                 expect(insection, 'to contain', interval);
             });
         });
@@ -83,8 +83,8 @@ describe("Insection", function () {
             Insection.interval(4, 3345),
             Insection.interval('[', 4, Infinity, ')')
         ].forEach(function (interval) {
-            it("add(" + interval.toString(true) + ") adds the"  + interval + "interval to the interval collection", function () {
-                expect(insection.add(interval), 'to be an', 'Insection');
+            it("add(" + interval.toString(true) + ",'foo') adds the value 'foo' for the interval "  + interval, function () {
+                expect(insection.add(interval, 'foo'), 'to be an', 'Insection');
                 expect(insection, 'not to be empty');
                 expect(insection, 'to contain', interval);
             });
