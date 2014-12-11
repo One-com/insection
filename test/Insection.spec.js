@@ -45,15 +45,15 @@ describe("Insection", function () {
         });
 
         [
-            { interval: Insection.interval('(', -Infinity, 5, ']'), toString: '(-Infinity,5]' },
-            { interval: Insection.interval(-3454, 5), toString: '[-3454,5]' },
-            { interval: Insection.interval(4, 5), toString: '[4,5]' },
-            { interval: Insection.interval(4, 3345), toString: '[4,3345]' },
-            { interval: Insection.interval(4, 4), toString: '[4,4]' },
-            { interval: Insection.interval("a", "b"), toString: '[a,b]' },
-            { interval: Insection.interval('[', 4, 4, ')'), toString: '[4,4)' },
-            { interval: Insection.interval('[', 4, Infinity, ')'), toString: '[4,Infinity)' },
-            { interval: Insection.interval('(', -Infinity, Infinity, ')'), toString: '(-Infinity,Infinity)' }
+            { interval: Insection.interval('(', -Infinity, 5, ']'), toString: '(-Infinity;5]' },
+            { interval: Insection.interval(-3454, 5), toString: '[-3454;5]' },
+            { interval: Insection.interval(4, 5), toString: '[4;5]' },
+            { interval: Insection.interval(4, 3345), toString: '[4;3345]' },
+            { interval: Insection.interval(4, 4), toString: '[4;4]' },
+            { interval: Insection.interval("a", "b"), toString: '[a;b]' },
+            { interval: Insection.interval('[', 4, 4, ')'), toString: '[4;4)' },
+            { interval: Insection.interval('[', 4, Infinity, ')'), toString: '[4;Infinity)' },
+            { interval: Insection.interval('(', -Infinity, Infinity, ')'), toString: '(-Infinity;Infinity)' }
         ].forEach(function (example) {
             it(example.interval.toString(true) + " returns the interval " + example.toString, function () {
                 expect(example.interval.toString(), 'to equal', example.toString);
@@ -166,11 +166,11 @@ describe("Insection", function () {
 
         it('returns the values of all intervals that intersects the given interval', function () {
             expect(insection.get(4, 5).sort(), 'to equal', [
-                '(-Infinity,5]',
-                '[-3454,5]',
-                '[4,3345]',
-                '[4,5]',
-                '[4,Infinity)'
+                '(-Infinity;5]',
+                '[-3454;5]',
+                '[4;3345]',
+                '[4;5]',
+                '[4;Infinity)'
             ]);
         });
     });
