@@ -45,11 +45,31 @@ describe("Insection", function () {
             { interval: Insection.interval(-3454, 5), toString: '[-3454,5]' },
             { interval: Insection.interval(4, 5), toString: '[4,5]' },
             { interval: Insection.interval(4, 3345), toString: '[4,3345]' },
+            { interval: Insection.interval(4, 4), toString: '[4,4]' },
+            { interval: Insection.interval("a", "b"), toString: '[a,b]' },
+            { interval: Insection.interval('[', 4, 4, ')'), toString: '[4,4)' },
             { interval: Insection.interval('[', 4, Infinity, ')'), toString: '[4,Infinity)' },
             { interval: Insection.interval('(', -Infinity, Infinity, ')'), toString: '(-Infinity,Infinity)' }
         ].forEach(function (example) {
             it(example.interval.toString(true) + " returns the interval " + example.toString, function () {
                 expect(example.interval.toString(), 'to equal', example.toString);
+            });
+        });
+
+        it('fails if the interval arguments are invalid', function () {
+            [
+                ['$', 3, 5, ']'],
+                ['(', 3, 5, '$'],
+                ['(', 3, '$'],
+                [5, -3454],
+                [5, 4],
+                ["b", "a"],
+                [4, "a"],
+                [Infinity, -Infinity]
+            ].forEach(function (args) {
+                expect(function () {
+                    Insection.interval.apply(null, args);
+                }, 'to throw', /valid signatures are/);
             });
         });
     });
