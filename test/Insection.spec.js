@@ -65,7 +65,9 @@ describe("Insection", function () {
                 [5, 4],
                 ["b", "a"],
                 [4, "a"],
-                [Infinity, -Infinity]
+                [Infinity, -Infinity],
+                [0, Infinity],
+                [-Infinity, 0]
             ].forEach(function (args) {
                 expect(function () {
                     Insection.interval.apply(null, args);
