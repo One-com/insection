@@ -174,4 +174,114 @@ describe("Insection", function () {
             ]);
         });
     });
+
+    describe('getIntervals', function () {
+        var intervals;
+        beforeEach(function () {
+            intervals = [
+                Insection.interval('(', -Infinity, 5, ']'),
+                Insection.interval(-3454, 5),
+                Insection.interval('[', 0, 4, ')'),
+                Insection.interval(2, 3),
+                Insection.interval(4, 5),
+                Insection.interval(6, 8),
+                Insection.interval(4, 3345),
+                Insection.interval('(', 5, 35, ')'),
+                Insection.interval('[', 4, Infinity, ')')
+            ];
+            intervals.forEach(function (interval, index) {
+                insection.add(interval, 'value');
+            });
+        });
+
+        it("getInterval(3) is an alias for getIntervals(Insection.interval('[',3,3,']'))", function () {
+            expect(insection.getIntervals(3), 'to equal', insection.getIntervals(Insection.interval('[', 3, 3, ']')));
+        });
+
+        it("getIntervals(3,4,'foo') is an alias for getIntervals(Insection.interval('[',3,4,']'),'foo')", function () {
+            expect(insection.getIntervals(3, 4), 'to equal', insection.getIntervals(Insection.interval('[', 3, 4, ']')));
+        });
+
+        [
+            Insection.interval('[', 3, 4, ']'),
+            Insection.interval('[', 3, 4, ')'),
+            Insection.interval('(', 3, 4, ']'),
+            Insection.interval('(', 3, 4, ')')
+        ].forEach(function (interval) {
+            var startString = interval.startString;
+            var start = interval.start;
+            var end = interval.end;
+            var endString = interval.endString;
+            it("getIntervals(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ",'foo') is an alias for getIntervals(" + interval.toString(true) + ",'foo')", function () {
+                expect(insection.getIntervals(startString, start, end, endString), 'to equal', insection.getIntervals(Insection.interval(startString, start, end, endString)));
+            });
+        });
+
+        it('returns the values of all intervals that intersects the given interval', function () {
+            expect(insection.getIntervals(4, 5).map(function (interval) {
+                return interval.toString();
+            }).sort(), 'to equal', [
+                '(-Infinity;5]',
+                '[-3454;5]',
+                '[4;3345]',
+                '[4;5]',
+                '[4;Infinity)'
+            ]);
+        });
+    });
+
+    describe('getEntries', function () {
+        var intervals;
+        beforeEach(function () {
+            intervals = [
+                Insection.interval('(', -Infinity, 5, ']'),
+                Insection.interval(-3454, 5),
+                Insection.interval('[', 0, 4, ')'),
+                Insection.interval(2, 3),
+                Insection.interval(4, 5),
+                Insection.interval(6, 8),
+                Insection.interval(4, 3345),
+                Insection.interval('(', 5, 35, ')'),
+                Insection.interval('[', 4, Infinity, ')')
+            ];
+            intervals.forEach(function (interval, index) {
+                insection.add(interval, interval.toString());
+            });
+        });
+
+        it("getEntries(3) is an alias for getEntries(Insection.interval('[',3,3,']'))", function () {
+            expect(insection.getEntries(3), 'to equal', insection.getEntries(Insection.interval('[', 3, 3, ']')));
+        });
+
+        it("getEntries(3,4,'foo') is an alias for getEntries(Insection.interval('[',3,4,']'),'foo')", function () {
+            expect(insection.getEntries(3, 4), 'to equal', insection.getEntries(Insection.interval('[', 3, 4, ']')));
+        });
+
+        [
+            Insection.interval('[', 3, 4, ']'),
+            Insection.interval('[', 3, 4, ')'),
+            Insection.interval('(', 3, 4, ']'),
+            Insection.interval('(', 3, 4, ')')
+        ].forEach(function (interval) {
+            var startString = interval.startString;
+            var start = interval.start;
+            var end = interval.end;
+            var endString = interval.endString;
+            it("getEntries(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ",'foo') is an alias for getEntries(" + interval.toString(true) + ",'foo')", function () {
+                expect(insection.getEntries(startString, start, end, endString), 'to equal', insection.getEntries(Insection.interval(startString, start, end, endString)));
+            });
+        });
+
+        it('returns the values of all intervals that intersects the given interval', function () {
+            expect(insection.getEntries(4, 5).map(function (entries) {
+                return entries.interval.toString() + ' => ' + entries.value;
+            }).sort(), 'to equal', [
+                '(-Infinity;5] => (-Infinity;5]',
+                '[-3454;5] => [-3454;5]',
+                '[4;3345] => [4;3345]',
+                '[4;5] => [4;5]',
+                '[4;Infinity) => [4;Infinity)'
+            ]);
+        });
+    });
 });
