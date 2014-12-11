@@ -36,6 +36,10 @@ describe("Insection", function () {
     });
 
     describe("interval", function () {
+        it("Insection.interval(3) is an alias for Insection.interval('[',3,3,']')", function () {
+            expect(Insection.interval(3), 'to equal', Insection.interval('[', 3, 3, ']'));
+        });
+
         it("Insection.interval(3,4) is an alias for Insection.interval('[',3,4,']')", function () {
             expect(Insection.interval(3, 4), 'to equal', Insection.interval('[', 3, 4, ']'));
         });
@@ -77,6 +81,11 @@ describe("Insection", function () {
     });
 
     describe("add", function () {
+        it("add(3,'foo') is an alias for add(Insection.interval('[',3,3,']'),'foo')", function () {
+            insection.add(3, 3, 'foo');
+            expect(insection, 'to contain', Insection.interval('[', 3, 3, ']'));
+        });
+
         it("add(3,4,'foo') is an alias for add(Insection.interval('[',3,4,']'),'foo')", function () {
             insection.add(3, 4, 'foo');
             expect(insection, 'to contain', Insection.interval('[', 3, 4, ']'));
@@ -129,6 +138,29 @@ describe("Insection", function () {
             ];
             intervals.forEach(function (interval, index) {
                 insection.add(interval, interval.toString());
+            });
+        });
+
+        it("get(3) is an alias for get(Insection.interval('[',3,3,']'))", function () {
+            expect(insection.get(3), 'to equal', insection.get(Insection.interval('[', 3, 3, ']')));
+        });
+
+        it("get(3,4,'foo') is an alias for get(Insection.interval('[',3,4,']'),'foo')", function () {
+            expect(insection.get(3, 4), 'to equal', insection.get(Insection.interval('[', 3, 4, ']')));
+        });
+
+        [
+            Insection.interval('[', 3, 4, ']'),
+            Insection.interval('[', 3, 4, ')'),
+            Insection.interval('(', 3, 4, ']'),
+            Insection.interval('(', 3, 4, ')')
+        ].forEach(function (interval) {
+            var startString = interval.startString;
+            var start = interval.start;
+            var end = interval.end;
+            var endString = interval.endString;
+            it("get(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ",'foo') is an alias for get(" + interval.toString(true) + ",'foo')", function () {
+                expect(insection.get(startString, start, end, endString), 'to equal', insection.get(Insection.interval(startString, start, end, endString)));
             });
         });
 
