@@ -110,4 +110,34 @@ describe("Insection", function () {
             });
         });
     });
+
+    describe('get', function () {
+        var intervals;
+        beforeEach(function () {
+            intervals = [
+                Insection.interval('(', -Infinity, 5, ']'),
+                Insection.interval(-3454, 5),
+                Insection.interval('[', 0, 4, ')'),
+                Insection.interval(2, 3),
+                Insection.interval(4, 5),
+                Insection.interval(6, 8),
+                Insection.interval(4, 3345),
+                Insection.interval('(', 5, 35, ')'),
+                Insection.interval('[', 4, Infinity, ')')
+            ];
+            intervals.forEach(function (interval, index) {
+                insection.add(interval, interval.toString());
+            });
+        });
+
+        it('returns the values of all intervals that intersects the given interval', function () {
+            expect(insection.get(4, 5).sort(), 'to equal', [
+                '(-Infinity,5]',
+                '[-3454,5]',
+                '[4,3345]',
+                '[4,5]',
+                '[4,Infinity)'
+            ]);
+        });
+    });
 });
