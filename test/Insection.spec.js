@@ -7,8 +7,25 @@ var expect = require('unexpected').clone()
         identify: function (value) {
             return value instanceof Insection;
         },
-        inspect: function (interval, depth, output) {
+        inspect: function (insection, depth, output) {
             return output.text('Insection');
+        }
+    })
+    .addType({
+        name: 'Interval',
+        base: 'object',
+        identify: function (value) {
+            return value &&
+                typeof value === 'object' &&
+                'start' in value && 'end' in value;
+        },
+        inspect: function (interval, depth, output) {
+            output.text(interval.startString || '[')
+                .text(interval.start)
+                .text(';')
+                .text(interval.end)
+                .text(interval.endString || ']');
+            return output;
         }
     })
     .addAssertion('Insection', '[not] to be empty', function (expect, subject) {
