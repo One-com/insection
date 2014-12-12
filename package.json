@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/One-com/insection",
   "devDependencies": {
+    "chance": "0.7.0",
     "mocha": "2.0.1",
     "unexpected": "5.0.0-beta24"
   }

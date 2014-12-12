@@ -1,5 +1,6 @@
-/*global describe, it, beforeEach*/
+/*global describe, it, before, beforeEach*/
 var Insection = require('../lib/Insection.js');
+var Chance = require('chance');
 var expect = require('unexpected').clone()
     .addType({
         name: 'Insection',
@@ -299,6 +300,137 @@ describe("Insection", function () {
                 '[4;5] => [4;5]',
                 '[4;Infinity) => [4;Infinity)'
             ]);
+        });
+    });
+
+    function Chunk(from, length) {
+        this.from = from;
+        this.to = from + length;
+    }
+
+    Chunk.prototype.toString = function () {
+        return this.from + '-' + this.to;
+    };
+
+    Chunk.prototype.forEach = function (cb) {
+        for (var i = this.from; i < this.to; i += 1) {
+            cb(i);
+        }
+    };
+
+    describe('@slow randomized tests', function () {
+        var numberOfIntervals = 10000;
+        var numberOfIntervalsToFind = 1000;
+        var chunkSize = 100;
+
+        var chunks = [];
+        for (var i = 0; i < numberOfIntervalsToFind / chunkSize; i += 1) {
+            chunks.push(new Chunk(i * chunkSize, chunkSize));
+        }
+
+        var chance = new Chance(42);
+        function findIntersectingIntervals(intervals, interval) {
+            return intervals.filter(function (entry) {
+                return interval.intersect(entry.interval);
+            }).map(function (entry) {
+                return entry.value;
+            });
+        }
+
+        describe('with ' + numberOfIntervals + ' floating number intervals', function () {
+            var intervalLengths = [10, 100, 1000, 10000, Number.MAX_VALUE];
+            var intervalStartingPoints = [{min: 0, max: 10000}, {min: -10000, max: 0}, {min: -10000, max: 10000}, {}];
+            function createInterval() {
+                var start = chance.floating(chance.pick(intervalStartingPoints));
+                var end = chance.floating({min: start, max: Math.min(start + chance.pick(intervalLengths), 900719925474.0992)});
+                return Insection.interval(
+                    chance.bool({likelihood: 70}) ? '[' : '(',
+                    start,
+                    end,
+                    chance.bool({likelihood: 70}) ? ']' : ')'
+                );
+            }
+
+            var intervals;
+            var insection;
+            before(function () {
+                intervals = [];
+                insection = new Insection();
+                for (var i = 0; i < numberOfIntervals; i += 1) {
+                    var interval = createInterval();
+                    var value = chance.guid();
+                    intervals.push({ interval: interval, value: value });
+                    insection.add(interval, value);
+                }
+            });
+
+            describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {
+                chunks.forEach(function (chunk) {
+                    it(chunk.toString(), function () {
+                        chunk.forEach(function () {
+                            var interval = createInterval();
+                            expect(insection.get(interval).sort(), 'to equal', findIntersectingIntervals(intervals, interval).sort());
+                        });
+                    });
+                });
+            });
+
+            describe('contains all the inserted intervals', function () {
+                chunks.forEach(function (chunk) {
+                    it(chunk.toString(), function () {
+                        chunk.forEach(function (i) {
+                            expect(insection, 'to contain', intervals[i].interval);
+                        });
+                    });
+                });
+            });
+        });
+
+        describe('with ' + numberOfIntervals + ' string intervals', function () {
+            function createInterval() {
+                var start = chance.string({length: 10});
+                var end = String.fromCharCode(start.charCodeAt(0) + 5) + start.slice(1);
+                return Insection.interval(
+                    chance.bool({likelihood: 70}) ? '[' : '(',
+                    start,
+                    end,
+                    chance.bool({likelihood: 70}) ? ']' : ')'
+                );
+            }
+
+            var intervals;
+            var insection;
+            before(function () {
+                intervals = [];
+                insection = new Insection();
+                for (var i = 0; i < numberOfIntervals; i += 1) {
+                    var interval = createInterval();
+                    var value = chance.guid();
+                    intervals.push({ interval: interval, value: value });
+                    insection.add(interval, value);
+                }
+            });
+
+            describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {
+                chunks.forEach(function (chunk) {
+                    it(chunk.toString(), function () {
+                        chunk.forEach(function () {
+                            var interval = createInterval();
+                            expect(insection.get(interval).sort(), 'to equal', findIntersectingIntervals(intervals, interval).sort());
+                        });
+                    });
+                });
+            });
+
+            describe('contains all the inserted intervals', function () {
+                chunks.forEach(function (chunk) {
+                    it(chunk.toString(), function () {
+                        chunk.forEach(function (i) {
+                            expect(insection, 'to contain', intervals[i].interval);
+                        });
+                    });
+                });
+            });
         });
     });
 });
