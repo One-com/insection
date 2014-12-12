@@ -1,8 +1,10 @@
 /*global describe, it, beforeEach*/
 var Insection = require('../lib/Insection.js');
 var expect = require('./unexpected-configured');
+var Chance = require('chance');
 
 describe("Insection", function () {
+    var chance = new Chance(42);
     var insection;
     beforeEach(function () {
         insection = new Insection();
@@ -15,6 +17,10 @@ describe("Insection", function () {
 
         it("is empty before any intervals has been added", function () {
             expect(insection, 'to be empty');
+        });
+
+        it('can be called as a function', function () {
+            expect(Insection(), 'to be an', 'Insection');
         });
     });
 
@@ -54,7 +60,8 @@ describe("Insection", function () {
                 [4, "a"],
                 [Infinity, -Infinity],
                 [0, Infinity],
-                [-Infinity, 0]
+                ['(', 0, Infinity, ']'],
+                ['[', -Infinity, 0, ')']
             ], 'to be an array whose items satisfy', function (args) {
                 expect(function () {
                     Insection.interval.apply(null, args);
@@ -102,6 +109,65 @@ describe("Insection", function () {
                 expect(insection, 'not to be empty');
                 expect(insection, 'to contain', interval);
             });
+        });
+    });
+
+    describe('contains', function () {
+        var entries = [
+            Insection.interval('(', -Infinity, 5, ']'),
+            Insection.interval(-3454, 5),
+            Insection.interval('[', 0, 4, ')'),
+            Insection.interval(2, 3),
+            Insection.interval(4, 4),
+            Insection.interval(4, 5),
+            Insection.interval(6, 8),
+            Insection.interval('(', 5, 35, ')'),
+            Insection.interval('[', 4000, Infinity, ')')
+        ].map(function (interval, index) {
+            return { interval: interval, value: index };
+        });
+
+        beforeEach(function () {
+            entries.forEach(function (entry) {
+                insection.add(entry.interval, entry.value);
+            });
+        });
+
+        it("contains(4) is an alias for contains(Insection.interval('[',4,4,']'))", function () {
+            expect(insection.contains(4, 4), 'to be true');
+        });
+
+        it("contains(4,5) is an alias for contains(Insection.interval('[',4,5,']'))", function () {
+            expect(insection.contains(4, 4), 'to be true');
+        });
+
+        it('returns true if the insection contains the given interval', function () {
+            entries.forEach(function (entry) {
+                expect(insection, 'to contain', entry.interval);
+            });
+        });
+
+        it('returns false if the insection contains the given interval', function () {
+            [
+                Insection.interval('(', -Infinity, 5, ')'),
+                Insection.interval(-3454, 6),
+                Insection.interval('[', 0, 4, ']'),
+                Insection.interval(2, 2),
+                Insection.interval(2, 10),
+                Insection.interval(1000, 1010),
+                Insection.interval('[', 5, 35, ']'),
+                Insection.interval('(', 4000, Infinity, ')')
+            ].forEach(function (interval) {
+                expect(insection, 'not to contain', interval);
+            });
+        });
+
+        it('returns false if the insection is empty', function () {
+            expect(new Insection().contains(1, 3), 'to be false');
+        });
+
+        it('returns false if the hieracical data on the root of the tree does not contain the given interval', function () {
+            expect(new Insection().add(5, 10, 'foo').contains(1, 3), 'to be false');
         });
     });
 
@@ -164,6 +230,12 @@ describe("Insection", function () {
                 expect(insection, 'not to contain', interval);
             });
         });
+
+        it('remove on a empty insection does nothing', function () {
+            var insection = new Insection();
+            expect(insection.remove(2,3,'foo'), 'to be an', 'Insection');
+            expect(insection, 'to be empty');
+        });
     });
 
     describe('get', function () {
@@ -217,6 +289,10 @@ describe("Insection", function () {
                 '[4;Infinity)'
             ]);
         });
+
+        it('returns an empty list if the insection is empty', function () {
+            expect(new Insection().get('(', -Infinity, Infinity, ')'), 'to be empty');
+        });
     });
 
     describe('getIntervals', function () {
@@ -228,13 +304,14 @@ describe("Insection", function () {
                 Insection.interval('[', 0, 4, ')'),
                 Insection.interval(2, 3),
                 Insection.interval(4, 5),
+                Insection.interval(4, 5),
                 Insection.interval(6, 8),
                 Insection.interval(4, 3345),
                 Insection.interval('(', 5, 35, ')'),
                 Insection.interval('[', 4, Infinity, ')')
             ];
             intervals.forEach(function (interval, index) {
-                insection.add(interval, 'value');
+                insection.add(interval, chance.natural());
             });
         });
 
@@ -268,6 +345,7 @@ describe("Insection", function () {
                 '(-Infinity;5]',
                 '[-3454;5]',
                 '[4;3345]',
+                '[4;5]',
                 '[4;5]',
                 '[4;Infinity)'
             ]);
