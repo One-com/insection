@@ -78,7 +78,7 @@ describe("Insection", function () {
         });
 
         it('fails if the interval arguments are invalid', function () {
-            [
+            expect([
                 ['$', 3, 5, ']'],
                 ['(', 3, 5, '$'],
                 ['(', 3, '$'],
@@ -89,7 +89,7 @@ describe("Insection", function () {
                 [Infinity, -Infinity],
                 [0, Infinity],
                 [-Infinity, 0]
-            ].forEach(function (args) {
+            ], 'to be an array whose items satisfy', function (args) {
                 expect(function () {
                     Insection.interval.apply(null, args);
                 }, 'to throw', /valid signatures are/);
