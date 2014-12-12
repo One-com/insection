@@ -4,7 +4,8 @@
   "description": "A data structure for storing number intervals",
   "main": "lib/insection.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha -i -g @slow",
+    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot -i -g @slow"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "chance": "0.7.0",
     "mocha": "2.0.1",
+    "istanbul": "^0.3.0",
     "unexpected": "5.0.0-beta24"
   }
 }

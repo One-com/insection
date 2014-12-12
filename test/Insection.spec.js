@@ -1,4 +1,4 @@
-/*global describe, it, before, beforeEach*/
+/*global describe, it, beforeEach*/
 var Insection = require('../lib/Insection.js');
 var Chance = require('chance');
 var expect = require('unexpected').clone()
@@ -38,6 +38,7 @@ var expect = require('unexpected').clone()
 
 
 describe("Insection", function () {
+    var chance = new Chance(42);
     var insection;
     beforeEach(function () {
         insection = new Insection();
@@ -136,6 +137,67 @@ describe("Insection", function () {
                 expect(insection.add(interval, 'foo'), 'to be an', 'Insection');
                 expect(insection, 'not to be empty');
                 expect(insection, 'to contain', interval);
+            });
+        });
+    });
+
+    describe('remove', function () {
+        var entries = [
+            Insection.interval('(', -Infinity, 5, ']'),
+            Insection.interval(-3454, 5),
+            Insection.interval('[', 0, 4, ')'),
+            Insection.interval(2, 3),
+            Insection.interval(4, 4),
+            Insection.interval(4, 5),
+            Insection.interval(6, 8),
+            Insection.interval(4, 3345),
+            Insection.interval('(', 5, 35, ')'),
+            Insection.interval('[', 4, Infinity, ')')
+        ].map(function (interval, index) {
+            return { interval: interval, value: index };
+        });
+
+        beforeEach(function () {
+            entries.forEach(function (entry) {
+                insection.add(entry.interval, entry.value);
+            });
+        });
+
+        it("remove(3,'foo') is an alias for remove(Insection.interval('[',3,3,']'),'foo')", function () {
+            insection.add(3, 3, 'foo');
+            insection.remove(3, 3, 'foo');
+            expect(insection, 'not to contain', Insection.interval('[', 3, 3, ']'));
+        });
+
+        it("remove(3,4,'foo') is an alias for remove(Insection.interval('[',3,4,']'),'foo')", function () {
+            insection.add(3, 4, 'foo');
+            insection.remove(3, 4, 'foo');
+            expect(insection, 'not to contain', Insection.interval('[', 3, 4, ']'));
+        });
+
+        [
+            Insection.interval('[', 3, 4, ']'),
+            Insection.interval('[', 3, 4, ')'),
+            Insection.interval('(', 3, 4, ']'),
+            Insection.interval('(', 3, 4, ')')
+        ].forEach(function (interval) {
+            var startString = interval.startString;
+            var start = interval.start;
+            var end = interval.end;
+            var endString = interval.endString;
+            it("remove(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ",'foo') is an alias for remove(" + interval.toString(true) + ",'foo')", function () {
+                insection.add(interval, 'foo');
+                insection.remove(startString, start, end, endString, 'foo');
+                expect(insection, 'not to contain', interval);
+            });
+        });
+
+        entries.forEach(function (entry) {
+            var interval = entry.interval;
+            var value = entry.value;
+            it("remove(" + interval.toString(true) + ",'" + value + "') removes the interval " + interval + " => '" + value, function () {
+                expect(insection.remove(interval, value), 'to be an', 'Insection');
+                expect(insection, 'not to contain', interval);
             });
         });
     });
@@ -318,17 +380,25 @@ describe("Insection", function () {
         }
     };
 
+    function Chunks(length, chunkSize) {
+        if (!(this instanceof Chunks)) {
+            return new Chunks(length, chunkSize);
+        }
+
+        this.chunkSize = chunkSize || 100;
+        this.length = length;
+    }
+
+    Chunks.prototype.forEach = function (cb) {
+        for (var i = 0; i < this.length; i += this.chunkSize) {
+            cb(new Chunk(i, this.chunkSize));
+        }
+    };
+
     describe('@slow randomized tests', function () {
         var numberOfIntervals = 10000;
         var numberOfIntervalsToFind = 1000;
-        var chunkSize = 100;
 
-        var chunks = [];
-        for (var i = 0; i < numberOfIntervalsToFind / chunkSize; i += 1) {
-            chunks.push(new Chunk(i * chunkSize, chunkSize));
-        }
-
-        var chance = new Chance(42);
         function findIntersectingIntervals(intervals, interval) {
             return intervals.filter(function (entry) {
                 return interval.intersect(entry.interval);
@@ -351,35 +421,46 @@ describe("Insection", function () {
                 );
             }
 
-            var intervals;
+            var entries;
             var insection;
-            before(function () {
-                intervals = [];
+            beforeEach(function () {
+                entries = [];
                 insection = new Insection();
                 for (var i = 0; i < numberOfIntervals; i += 1) {
                     var interval = createInterval();
                     var value = chance.guid();
-                    intervals.push({ interval: interval, value: value });
+                    entries.push({ interval: interval, value: value });
                     insection.add(interval, value);
                 }
             });
 
             describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {
-                chunks.forEach(function (chunk) {
+                Chunks(numberOfIntervalsToFind).forEach(function (chunk) {
                     it(chunk.toString(), function () {
                         chunk.forEach(function () {
                             var interval = createInterval();
-                            expect(insection.get(interval).sort(), 'to equal', findIntersectingIntervals(intervals, interval).sort());
+                            expect(insection.get(interval).sort(), 'to equal', findIntersectingIntervals(entries, interval).sort());
                         });
                     });
                 });
             });
 
             describe('contains all the inserted intervals', function () {
-                chunks.forEach(function (chunk) {
+                Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
                     it(chunk.toString(), function () {
                         chunk.forEach(function (i) {
-                            expect(insection, 'to contain', intervals[i].interval);
+                            expect(insection, 'to contain', entries[i].interval);
+                        });
+                    });
+                });
+            });
+
+            describe('all intervals can be removed', function () {
+                Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
+                    it(chunk.toString(), function () {
+                        chunk.forEach(function (i) {
+                            insection.remove(entries[i].interval, entries[i].value);
+                            expect(insection, 'not to contain', entries[i].interval);
                         });
                     });
                 });
@@ -398,35 +479,46 @@ describe("Insection", function () {
                 );
             }
 
-            var intervals;
+            var entries;
             var insection;
-            before(function () {
-                intervals = [];
+            beforeEach(function () {
+                entries = [];
                 insection = new Insection();
                 for (var i = 0; i < numberOfIntervals; i += 1) {
                     var interval = createInterval();
                     var value = chance.guid();
-                    intervals.push({ interval: interval, value: value });
+                    entries.push({ interval: interval, value: value });
                     insection.add(interval, value);
                 }
             });
 
             describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {
-                chunks.forEach(function (chunk) {
+                Chunks(numberOfIntervalsToFind).forEach(function (chunk) {
                     it(chunk.toString(), function () {
                         chunk.forEach(function () {
                             var interval = createInterval();
-                            expect(insection.get(interval).sort(), 'to equal', findIntersectingIntervals(intervals, interval).sort());
+                            expect(insection.get(interval).sort(), 'to equal', findIntersectingIntervals(entries, interval).sort());
                         });
                     });
                 });
             });
 
             describe('contains all the inserted intervals', function () {
-                chunks.forEach(function (chunk) {
+                Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
                     it(chunk.toString(), function () {
                         chunk.forEach(function (i) {
-                            expect(insection, 'to contain', intervals[i].interval);
+                            expect(insection, 'to contain', entries[i].interval);
+                        });
+                    });
+                });
+            });
+
+            describe('all intervals can be removed', function () {
+                Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
+                    it(chunk.toString(), function () {
+                        chunk.forEach(function (i) {
+                            insection.remove(entries[i].interval, entries[i].value);
+                            expect(insection, 'not to contain', entries[i].interval);
                         });
                     });
                 });
