@@ -26,10 +26,6 @@ describe('@slow randomized tests', function () {
     };
 
     function Chunks(length, chunkSize) {
-        if (!(this instanceof Chunks)) {
-            return new Chunks(length, chunkSize);
-        }
-
         this.chunkSize = chunkSize || 100;
         this.length = length;
     }
@@ -79,7 +75,7 @@ describe('@slow randomized tests', function () {
         });
 
         describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {
-            Chunks(numberOfIntervalsToFind).forEach(function (chunk) {
+            new Chunks(numberOfIntervalsToFind).forEach(function (chunk) {
                 it(chunk.toString(), function () {
                     chunk.forEach(function () {
                         var interval = createInterval();
@@ -90,7 +86,7 @@ describe('@slow randomized tests', function () {
         });
 
         describe('contains all the inserted intervals', function () {
-            Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
+            new Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
                 it(chunk.toString(), function () {
                     chunk.forEach(function (i) {
                         expect(insection, 'to contain', entries[i].interval);
@@ -100,7 +96,7 @@ describe('@slow randomized tests', function () {
         });
 
         describe('all intervals can be removed', function () {
-            Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
+            new Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
                 it(chunk.toString(), function () {
                     chunk.forEach(function (i) {
                         insection.remove(entries[i].interval, entries[i].value);
@@ -137,7 +133,7 @@ describe('@slow randomized tests', function () {
         });
 
         describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {
-            Chunks(numberOfIntervalsToFind).forEach(function (chunk) {
+            new Chunks(numberOfIntervalsToFind).forEach(function (chunk) {
                 it(chunk.toString(), function () {
                     chunk.forEach(function () {
                         var interval = createInterval();
@@ -148,7 +144,7 @@ describe('@slow randomized tests', function () {
         });
 
         describe('contains all the inserted intervals', function () {
-            Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
+            new Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
                 it(chunk.toString(), function () {
                     chunk.forEach(function (i) {
                         expect(insection, 'to contain', entries[i].interval);
@@ -158,7 +154,7 @@ describe('@slow randomized tests', function () {
         });
 
         describe('all intervals can be removed', function () {
-            Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
+            new Chunks(numberOfIntervals, 5000).forEach(function (chunk) {
                 it(chunk.toString(), function () {
                     chunk.forEach(function (i) {
                         insection.remove(entries[i].interval, entries[i].value);

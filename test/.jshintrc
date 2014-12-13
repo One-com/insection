@@ -1,0 +1,15 @@
+{
+    "extends": "../.jshintrc",
+    "browser": true,
+    "node": true,
+
+    "globals": {
+        "require": false,
+        "define": false,
+        "describe": false,
+        "it": false,
+        "before": false,
+        "beforeEach": false,
+        "defineTest": false
+    }
+}

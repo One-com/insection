@@ -1,4 +1,3 @@
-/*global describe, it, beforeEach*/
 var Insection = require('../lib/Insection.js');
 var expect = require('./unexpected-configured');
 var Chance = require('chance');
@@ -20,6 +19,7 @@ describe("Insection", function () {
         });
 
         it('can be called as a function', function () {
+            /* jshint newcap:false */
             expect(Insection(), 'to be an', 'Insection');
         });
     });
@@ -233,7 +233,7 @@ describe("Insection", function () {
 
         it('remove on a empty insection does nothing', function () {
             var insection = new Insection();
-            expect(insection.remove(2,3,'foo'), 'to be an', 'Insection');
+            expect(insection.remove(2, 3, 'foo'), 'to be an', 'Insection');
             expect(insection, 'to be empty');
         });
     });

@@ -4,8 +4,10 @@
   "description": "A data structure for storing number intervals",
   "main": "lib/insection.js",
   "scripts": {
+    "lint": "jshint lib && jshint test && jscs lib && jscs test",
     "test": "mocha -i -g @slow",
-    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot -i -g @slow"
+    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot -i -g @slow",
+    "prepublish": "browserify -p bundle-collapser/plugin -e lib/Insection -s com.one.insection -o insecetion.js"
   },
   "repository": {
     "type": "git",
@@ -23,9 +25,13 @@
   },
   "homepage": "https://github.com/One-com/insection",
   "devDependencies": {
+    "browserify": "^5.9.1",
+    "bundle-collapser": "^1.1.0",
     "chance": "0.7.0",
-    "mocha": "2.0.1",
     "istanbul": "^0.3.0",
+    "jscs": "^1.8.1",
+    "jshint": "*",
+    "mocha": "2.0.1",
     "unexpected": "5.0.0-beta24"
   }
 }
