@@ -74,6 +74,10 @@ describe('@slow randomized tests', function () {
             }
         });
 
+        it('the datastructure is balanced', function () {
+            expect(insection, 'to be balanced');
+        });
+
         describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {
             new Chunks(numberOfIntervalsToFind).forEach(function (chunk) {
                 it(chunk.toString(), function () {
@@ -130,6 +134,10 @@ describe('@slow randomized tests', function () {
                 entries.push({ interval: interval, value: value });
                 insection.add(interval, value);
             }
+        });
+
+        it('the datastructure is balanced', function () {
+            expect(insection, 'to be balanced');
         });
 
         describe('finds the same ' + numberOfIntervalsToFind + ' intervals as a simple algorithm', function () {

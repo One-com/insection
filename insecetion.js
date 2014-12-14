@@ -5,7 +5,7 @@ var RedBlackTree = require(4);
 
 function augmenter(value, x, y) {
     var interval = value.interval;
-    if (!x && !y) return interval;
+    if (!x && !y) { return interval; }
 
     var minStart = interval;
     var maxEnd = interval;
@@ -33,20 +33,20 @@ function augmenter(value, x, y) {
 }
 
 function defaultValueComparer(x, y) {
-    if (x < y) return -1;
-    if (x > y) return 1;
+    if (x < y) { return -1; }
+    if (x > y) { return 1; }
     return 0;
 }
 
 function intervalComparer(x, y) {
-    if (x.start < y.start) return -1;
-    if (x.start > y.start) return 1;
-    if (x.end < y.end) return -1;
-    if (x.end > y.end) return 1;
-    if (!x.isStartOpen() && y.isStartOpen()) return -1;
-    if (x.isStartOpen() && !y.isStartOpen()) return 1;
-    if (!x.isEndOpen() && y.isEndOpen()) return -1;
-    if (x.isEndOpen() && !y.isEndOpen()) return 1;
+    if (x.start < y.start) { return -1; }
+    if (x.start > y.start) { return 1; }
+    if (x.end < y.end) { return -1; }
+    if (x.end > y.end) { return 1; }
+    if (!x.isStartOpen() && y.isStartOpen()) { return -1; }
+    if (x.isStartOpen() && !y.isStartOpen()) { return 1; }
+    if (!x.isEndOpen() && y.isEndOpen()) { return -1; }
+    if (x.isEndOpen() && !y.isEndOpen()) { return 1; }
     return 0;
 }
 
@@ -58,7 +58,7 @@ function Insection(valueComparer) {
 
     this.data = new RedBlackTree(function (x, y) {
         var c = intervalComparer(x.interval, y.interval);
-        if (c !== 0) return c;
+        if (c !== 0) { return c; }
         return valueComparer(x.value, y.value);
     }, augmenter);
 }
@@ -190,13 +190,15 @@ function Interval(start, end) {
 Interval.create = function (startString, start, end, endString) {
     switch (startString + endString) {
     case '[]':
-        if (isInfinite(start) || isInfinite(end)) throw new InvalidIntervalError(arguments);
+        if (isInfinite(start) || isInfinite(end)) {
+            throw new InvalidIntervalError(arguments);
+        }
         return new ClosedClosedInterval(start, end);
     case '[)':
-        if (isInfinite(start)) throw new InvalidIntervalError(arguments);
+        if (isInfinite(start)) { throw new InvalidIntervalError(arguments); }
         return new ClosedOpenInterval(start, end);
     case '(]':
-        if (isInfinite(end)) throw new InvalidIntervalError(arguments);
+        if (isInfinite(end)) { throw new InvalidIntervalError(arguments); }
         return new OpenClosedInterval(start, end);
     case '()': return new OpenOpenInterval(start, end);
     default: throw new InvalidIntervalError(arguments);
@@ -209,16 +211,14 @@ Interval.prototype.toString = function (detailed) {
 };
 
 Interval.prototype.intersect = function (other) {
-    var x = this;
-    var y = other;
     return !(
-        // y starts after x ends
-        x.end < y.start ||
-            // x starts after y ends
-            x.start > y.end ||
-            // x and y share start and end but one of the interval ends are open
-            (x.end === y.start && (x.isEndOpen() || y.isStartOpen())) ||
-            (x.start === y.end && (x.isStartOpen() || y.isEndOpen()))
+        // other interval starts after this interval ends
+        this.end < other.start ||
+            // this interval starts after other interval ends
+            this.start > other.end ||
+            // this interfval and the other interval share start and end but one of the interval ends are open
+            (this.end === other.start && (this.isEndOpen() || other.isStartOpen())) ||
+            (this.start === other.end && (this.isStartOpen() || other.isEndOpen()))
     );
 };
 

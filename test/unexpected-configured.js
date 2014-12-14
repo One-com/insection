@@ -36,4 +36,45 @@ module.exports = require('unexpected').clone()
     })
     .addAssertion('Interval', '[not] to intersect with', function (expect, subject, other) {
         expect(subject.intersect(other), '[not] to be true');
+    })
+    .addAssertion('Insection', 'to be balanced', function (expect, subject) {
+        var root = subject.data.root;
+
+        // Root node should always be black
+        expect(root.color, 'to be', 'black');
+
+        // All nodes have a color
+        (function assertHasColor(node) {
+            if (node === null) { return; }
+            expect(node.color, 'to match', /^red|black$/);
+            assertHasColor(node.left);
+            assertHasColor(node.right);
+        })(root);
+
+        // The children of a red node are black
+        (function assertChildColor(node) {
+            if (node === null) { return; }
+            if (node.color === 'red') {
+                if (node.left) { expect(node.left.color, 'to be', 'black'); }
+                if (node.right) { expect(node.right.color, 'to be', 'black'); }
+            }
+            assertChildColor(node.left);
+            assertChildColor(node.right);
+        })(root);
+
+        // All paths to leaf should have the same number of black nodes
+        (function check(node, total, path) {
+            if (node === null) {
+                if (path === -1) { return total; }
+                expect(path, 'to be', total);
+                return path;
+            }
+
+            if (node.color === 'black') { total++; }
+
+            path = check(node.left, total, path);
+            path = check(node.right, total, path);
+
+            return path;
+        })(root, 0, -1);
     });
