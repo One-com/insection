@@ -33,4 +33,7 @@ module.exports = require('unexpected').clone()
     })
     .addAssertion('Insection', '[not] to contain', function (expect, subject, interval) {
         expect(subject.contains(interval), '[not] to be true');
+    })
+    .addAssertion('Interval', '[not] to intersect with', function (expect, subject, other) {
+        expect(subject.intersect(other), '[not] to be true');
     });
