@@ -87,10 +87,14 @@ Signature:
 ```js
 insection.add(p, value) => insection.add('[', p, p, ']', value);
 insection.add(start, end, value) => insection.add('[', start, end, ']', value);
-insection.add('[', start, end, ']', value) => insection.add(Insection.interval('[', start, end, ']'), value);
-insection.add('[', start, end, ')', value) => insection.add(Insection.interval('[', start, end, ')'), value);
-insection.add('(', start, end, ']', value) => insection.add(Insection.interval('(', start, end, ']'), value);
-insection.add('(', start, end, ')', value) => insection.add(Insection.interval('(', start, end, ')'), value);
+insection.add('[', start, end, ']', value) =>
+  insection.add(Insection.interval('[', start, end, ']'), value);
+insection.add('[', start, end, ')', value) =>
+  insection.add(Insection.interval('[', start, end, ')'), value);
+insection.add('(', start, end, ']', value) =>
+  insection.add(Insection.interval('(', start, end, ']'), value);
+insection.add('(', start, end, ')', value) =>
+  insection.add(Insection.interval('(', start, end, ')'), value);
 insection.add(interval, value);
 ```
 
@@ -145,10 +149,14 @@ Signature:
 ```js
 insection.getIntervals(p) => insection.getIntervals('[', p, p, ']');
 insection.getIntervals(start, end) => insection.getIntervals('[', start, end, ']');
-insection.getIntervals('[', start, end, ']') => insection.getIntervals(Insection.interval('[', start, end, ']'));
-insection.getIntervals('[', start, end, ')') => insection.getIntervals(Insection.interval('[', start, end, ')'));
-insection.getIntervals('(', start, end, ']') => insection.getIntervals(Insection.interval('(', start, end, ']'));
-insection.getIntervals('(', start, end, ')') => insection.getIntervals(Insection.interval('(', start, end, ')'));
+insection.getIntervals('[', start, end, ']') =>
+  insection.getIntervals(Insection.interval('[', start, end, ']'));
+insection.getIntervals('[', start, end, ')') =>
+  insection.getIntervals(Insection.interval('[', start, end, ')'));
+insection.getIntervals('(', start, end, ']') =>
+  insection.getIntervals(Insection.interval('(', start, end, ']'));
+insection.getIntervals('(', start, end, ')') =>
+  insection.getIntervals(Insection.interval('(', start, end, ')'));
 insection.getIntervals(interval);
 ```
 
@@ -165,7 +173,11 @@ insection.add('[', 2, Infinity, ')', 'qux');
 expect(insection.getIntervals(1, 5).map(String).sort(), 'to equal', ['[0;4]', '(2;6]']);
 expect(insection.getIntervals(0, 2).map(String).sort(), 'to equal', ['[0;4]']);
 expect(insection.getIntervals('(', -Infinity, 2, ')').map(String).sort(), 'to equal', ['[0;4]']);
-expect(insection.getIntervals(2).map(String).sort(), 'to equal', ['[0;4]', '[2;Infinity)', '[2;Infinity)']);
+expect(insection.getIntervals(2).map(String).sort(), 'to equal', [
+  '[0;4]',
+  '[2;Infinity)',
+  '[2;Infinity)'
+]);
 ```
 ### getEntries
 
@@ -176,10 +188,14 @@ Signature:
 ```js
 insection.getEntries(p) => insection.getEntries('[', p, p, ']');
 insection.getEntries(start, end) => insection.getEntries('[', start, end, ']');
-insection.getEntries('[', start, end, ']') => insection.getEntries(Insection.interval('[', start, end, ']'));
-insection.getEntries('[', start, end, ')') => insection.getEntries(Insection.interval('[', start, end, ')'));
-insection.getEntries('(', start, end, ']') => insection.getEntries(Insection.interval('(', start, end, ']'));
-insection.getEntries('(', start, end, ')') => insection.getEntries(Insection.interval('(', start, end, ')'));
+insection.getEntries('[', start, end, ']') =>
+  insection.getEntries(Insection.interval('[', start, end, ']'));
+insection.getEntries('[', start, end, ')') =>
+  insection.getEntries(Insection.interval('[', start, end, ')'));
+insection.getEntries('(', start, end, ']') =>
+  insection.getEntries(Insection.interval('(', start, end, ']'));
+insection.getEntries('(', start, end, ')') =>
+  insection.getEntries(Insection.interval('(', start, end, ')'));
 insection.getEntries(interval);
 ```
 
@@ -205,10 +221,14 @@ Signature:
 ```js
 insection.contains(p) => insection.contains('[', p, p, ']');
 insection.contains(start, end) => insection.contains('[', start, end, ']');
-insection.contains('[', start, end, ']') => insection.contains(Insection.interval('[', start, end, ']'));
-insection.contains('[', start, end, ')') => insection.contains(Insection.interval('[', start, end, ')'));
-insection.contains('(', start, end, ']') => insection.contains(Insection.interval('(', start, end, ']'));
-insection.contains('(', start, end, ')') => insection.contains(Insection.interval('(', start, end, ')'));
+insection.contains('[', start, end, ']') =>
+  insection.contains(Insection.interval('[', start, end, ']'));
+insection.contains('[', start, end, ')') =>
+  insection.contains(Insection.interval('[', start, end, ')'));
+insection.contains('(', start, end, ']') =>
+  insection.contains(Insection.interval('(', start, end, ']'));
+insection.contains('(', start, end, ')') =>
+  insection.contains(Insection.interval('(', start, end, ')'));
 insection.contains(interval);
 ```
 
@@ -235,10 +255,14 @@ Signature:
 ```js
 insection.remove(p, value) => insection.remove('[', p, p, ']', value);
 insection.remove(start, end, value) => insection.remove('[', start, end, ']', value);
-insection.remove('[', start, end, ']', value) => insection.remove(Insection.interval('[', start, end, ']'), value);
-insection.remove('[', start, end, ')', value) => insection.remove(Insection.interval('[', start, end, ')'), value);
-insection.remove('(', start, end, ']', value) => insection.remove(Insection.interval('(', start, end, ']'), value);
-insection.remove('(', start, end, ')', value) => insection.remove(Insection.interval('(', start, end, ')'), value);
+insection.remove('[', start, end, ']', value) =>
+  insection.remove(Insection.interval('[', start, end, ']'), value);
+insection.remove('[', start, end, ')', value) =>
+  insection.remove(Insection.interval('[', start, end, ')'), value);
+insection.remove('(', start, end, ']', value) =>
+  insection.remove(Insection.interval('(', start, end, ']'), value);
+insection.remove('(', start, end, ')', value) =>
+  insection.remove(Insection.interval('(', start, end, ')'), value);
 insection.remove(interval, value);
 ```
 
