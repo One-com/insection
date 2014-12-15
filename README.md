@@ -1,6 +1,6 @@
 # Insection
 
-A fast data structure that allows efficiently find all intervals that
+A data structure that allows efficiently to find all intervals that
 overlap with any given interval or point.
 
 The data structure is a red black tree augmented with hieracical data

@@ -7,7 +7,7 @@
     "lint": "jshint lib && jshint test && jscs lib && jscs test",
     "test": "mocha -i -g @slow",
     "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot -i -g @slow",
-    "prepublish": "(echo '/*!' && <LICENSE sed -e's/^/ * /' | sed -e's/\\s+$//' && echo ' */' && browserify -p bundle-collapser/plugin -e lib/Insection -s com.one.insection) > insecetion.js"
+    "prepublish": "(echo '/*!' && <LICENSE sed -e's/^/ * /' | sed -e's/\\s+$//' && echo ' */' && browserify -p bundle-collapser/plugin -e lib/Insection -s com.one.insection) > insection.js"
   },
   "repository": {
     "type": "git",
