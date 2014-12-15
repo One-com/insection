@@ -78,6 +78,30 @@ expect(insection.get(2).sort(), 'to equal', ['foo', 'baz']);
 
 ## API
 
+### constructor
+
+Creates a new insection instance.
+
+Signature:
+
+```js
+new Insection(); => new Insection(defaultValueComparer);
+new Insection(valueComparer);
+```
+
+where `defaultValueComparer` is:
+
+```js
+function defaultValueComparer(x, y) {
+    if (x < y) { return -1; }
+    if (x > y) { return 1; }
+    return 0;
+}
+```
+
+Values is required to have a total order, if you values does not
+support the comparison operators you can specify a valueComparer.
+
 ### add
 
 Associate the given value with the specified interval.
