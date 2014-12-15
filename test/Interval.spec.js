@@ -8,6 +8,7 @@ describe('Interval', function () {
             [Insection.interval(-3454, 5), Insection.interval(-34, 2)],
             [Insection.interval(-3454, -34), Insection.interval(-34, 2)],
             [Insection.interval('[', 0, 4, ')'), Insection.interval(-10, 10)],
+            [Insection.interval('[', 0, 4, ')'), Insection.interval(0)],
             [Insection.interval(2, 3), Insection.interval(-10, 2)],
             [Insection.interval('(', 42, 42, ')'), Insection.interval(41, 43)],
             [Insection.interval('[', 42, 42, ')'), Insection.interval(41, 43)],

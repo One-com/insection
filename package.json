@@ -7,7 +7,7 @@
     "lint": "jshint lib && jshint test && jscs lib && jscs test",
     "test": "mocha -i -g @slow",
     "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot -i -g @slow",
-    "prepublish": "browserify -p bundle-collapser/plugin -e lib/Insection -s com.one.insection -o insecetion.js"
+    "prepublish": "(echo '/*!' && <LICENSE sed -e's/^/ * /' | sed -e's/\\s+$//' && echo ' */' && browserify -p bundle-collapser/plugin -e lib/Insection -s com.one.insection) > insecetion.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
     "intersection"
   ],
   "author": "Sune Simonsen <sss@one.com>",
-  "license": "Standard 3-clause BSD",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/One-com/insection/issues"
   },
