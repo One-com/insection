@@ -74,7 +74,7 @@ expect(insection.get(0, 2).sort(), 'to equal', ['foo']);
 insection.add('[', 2, Infinity, ')', 'baz');
 expect(insection.get('(', -Infinity, 2, ')').sort(), 'to equal', ['foo']);
 expect(insection.get(2).sort(), 'to equal', ['foo', 'baz']);
-``
+```
 
 ## API
 
