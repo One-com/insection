@@ -1,6 +1,6 @@
 {
   "name": "insection",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A data structure for storing number intervals",
   "main": "lib/insection.js",
   "scripts": {
