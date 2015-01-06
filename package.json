@@ -32,6 +32,6 @@
     "jscs": "^1.8.1",
     "jshint": "*",
     "mocha": "2.0.1",
-    "unexpected": "5.0.0-beta24"
+    "unexpected": "5.1.4"
   }
 }

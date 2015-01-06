@@ -7,8 +7,50 @@ module.exports = require('unexpected').clone()
         identify: function (value) {
             return value instanceof Insection;
         },
-        inspect: function (insection, depth, output) {
-            return output.text('Insection');
+        inspect: function (insection, depth, output, inspect) {
+            var entries = insection.getEntries();
+            var large = entries.length > 4;
+            output.text('insection(');
+            if (large) {
+                output.nl();
+                output.indentLines();
+            } else {
+                output.sp();
+            }
+            entries.sort(function (x, y) {
+                var xInterval = x.interval;
+                var yInterval = y.interval;
+                if (xInterval.start < yInterval.start) { return -1; }
+                if (xInterval.start > yInterval.start) { return 1; }
+                if (xInterval.end < yInterval.end) { return -1; }
+                if (xInterval.end > yInterval.end) { return 1; }
+                if (!xInterval.isStartOpen() && yInterval.isStartOpen()) { return -1; }
+                if (xInterval.isStartOpen() && !yInterval.isStartOpen()) { return 1; }
+                if (!xInterval.isEndOpen() && yInterval.isEndOpen()) { return -1; }
+                if (xInterval.isEndOpen() && !yInterval.isEndOpen()) { return 1; }
+                return 0;
+            }).forEach(function (entry, index) {
+                if (index > 0) {
+                    output.text(', ');
+                    if (large) {
+                        output.nl();
+                    } else {
+                        output.sp();
+                    }
+                }
+
+                output.i().append(inspect(entry.interval))
+                    .text(' => ')
+                    .append(inspect(entry.value));
+            });
+
+            if (large) {
+                output.nl();
+                output.outdentLines();
+            } else {
+                output.sp();
+            }
+            output.text(')');
         }
     })
     .addType({
@@ -21,9 +63,9 @@ module.exports = require('unexpected').clone()
         },
         inspect: function (interval, depth, output) {
             output.text(interval.startString || '[')
-                .text(interval.start)
+                .number(interval.start)
                 .text(';')
-                .text(interval.end)
+                .number(interval.end)
                 .text(interval.endString || ']');
             return output;
         }
