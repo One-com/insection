@@ -257,6 +257,10 @@ describe("Insection", function () {
             });
         });
 
+        it("get() returns all values in the data structure", function () {
+            expect(insection.get(), 'to equal', insection.get(Insection.interval('(', -Infinity, Infinity, ')')));
+        });
+
         it("get(3) is an alias for get(Insection.interval('[',3,3,']'))", function () {
             expect(insection.get(3), 'to equal', insection.get(Insection.interval('[', 3, 3, ']')));
         });
@@ -315,7 +319,11 @@ describe("Insection", function () {
             });
         });
 
-        it("getInterval(3) is an alias for getIntervals(Insection.interval('[',3,3,']'))", function () {
+        it("getIntervals() returns all values in the data structure", function () {
+            expect(insection.getIntervals(), 'to equal', insection.getIntervals(Insection.interval('(', -Infinity, Infinity, ')')));
+        });
+
+        it("getIntervals(3) is an alias for getIntervals(Insection.interval('[',3,3,']'))", function () {
             expect(insection.getIntervals(3), 'to equal', insection.getIntervals(Insection.interval('[', 3, 3, ']')));
         });
 
@@ -369,6 +377,10 @@ describe("Insection", function () {
             intervals.forEach(function (interval, index) {
                 insection.add(interval, interval.toString());
             });
+        });
+
+        it("getEntries() returns all values in the data structure", function () {
+            expect(insection.getEntries(), 'to equal', insection.getEntries(Insection.interval('(', -Infinity, Infinity, ')')));
         });
 
         it("getEntries(3) is an alias for getEntries(Insection.interval('[',3,3,']'))", function () {

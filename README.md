@@ -139,6 +139,7 @@ Retrieves the values for all intervals that intersect the given interval.
 Signature:
 
 ```js
+insection.get() => insection.get('(', min, max, ')');
 insection.get(p) => insection.get('[', p, p, ']');
 insection.get(start, end) => insection.get('[', start, end, ']');
 insection.get('[', start, end, ']') => insection.get(Insection.interval('[', start, end, ']'));
@@ -162,6 +163,7 @@ expect(insection.get(1, 5).sort(), 'to equal', ['foo', 'bar']);
 expect(insection.get(0, 2).sort(), 'to equal', ['foo']);
 expect(insection.get('(', -Infinity, 2, ')').sort(), 'to equal', ['foo']);
 expect(insection.get(2).sort(), 'to equal', ['foo', 'baz', 'qux']);
+expect(insection.get().sort(), 'to equal', ['foo', 'bar', 'baz', 'qux']);
 ```
 
 ### getIntervals
@@ -171,6 +173,7 @@ Retrieves the intervals that intersect the given interval.
 Signature:
 
 ```js
+insection.getIntervals() => insection.getIntervals('(', min, max, ')');
 insection.getIntervals(p) => insection.getIntervals('[', p, p, ']');
 insection.getIntervals(start, end) => insection.getIntervals('[', start, end, ']');
 insection.getIntervals('[', start, end, ']') =>
@@ -194,10 +197,16 @@ insection.add(0, 4, 'foo');
 insection.add('(', 2, 6, ']', 'bar');
 insection.add('[', 2, Infinity, ')', 'baz');
 insection.add('[', 2, Infinity, ')', 'qux');
-expect(insection.getIntervals(1, 5).map(String).sort(), 'to equal', ['[0;4]', '(2;6]']);
+expect(insection.getIntervals(1, 5).map(String).sort(), 'to equal', ['(2;6]', '[0;4]']);
 expect(insection.getIntervals(0, 2).map(String).sort(), 'to equal', ['[0;4]']);
 expect(insection.getIntervals('(', -Infinity, 2, ')').map(String).sort(), 'to equal', ['[0;4]']);
 expect(insection.getIntervals(2).map(String).sort(), 'to equal', [
+  '[0;4]',
+  '[2;Infinity)',
+  '[2;Infinity)'
+]);
+expect(insection.getIntervals().map(String).sort(), 'to equal', [
+  '(2;6]',
   '[0;4]',
   '[2;Infinity)',
   '[2;Infinity)'
@@ -210,6 +219,7 @@ Retrieves the interval and value for the intervals that intersect the given inte
 Signature:
 
 ```js
+insection.getEntries() => insection.getEntries('(', min, max, ')');
 insection.getEntries(p) => insection.getEntries('[', p, p, ']');
 insection.getEntries(start, end) => insection.getEntries('[', start, end, ']');
 insection.getEntries('[', start, end, ']') =>
@@ -233,7 +243,10 @@ insection.add(0, 4, 'foo');
 insection.add('(', 2, 6, ']', 'bar');
 expect(insection.getIntervals(1, 5).map(function (entry) {
     return entry.interval + ' => ' + entry.value;
-}).sort(), 'to equal', ['[0;4] => foo', '(2;6] => bar']);
+}).sort(), 'to equal', ['(2;6] => bar', '[0;4] => foo']);
+expect(insection.getIntervals().map(function (entry) {
+    return entry.interval + ' => ' + entry.value;
+}).sort(), 'to equal', ['(2;6] => bar', '[0;4] => foo']);
 ```
 
 ### contains
