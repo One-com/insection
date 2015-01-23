@@ -110,6 +110,18 @@ describe("Insection", function () {
                 expect(insection, 'to contain', interval);
             });
         });
+
+        it("overrides duplicate entries", function () {
+            insection.add(3, 4, 'foo');
+            insection.add(3, 4, 'foo');
+            expect(insection.get(), 'to have length', 1);
+        });
+
+        it("does not consider duplicate intervals with distinct value duplicate", function () {
+            insection.add(3, 4, 'foo');
+            insection.add(3, 4, 'bar');
+            expect(insection.get(), 'to have length', 2);
+        });
     });
 
     describe('contains', function () {
