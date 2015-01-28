@@ -7,6 +7,7 @@
     "lint": "jshint lib && jshint test && jscs lib && jscs test",
     "test": "mocha -i -g @slow",
     "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot -i -g @slow",
+    "travis": "npm test && npm run coverage && <coverage/lcov.info coveralls",
     "prepublish": "(echo '/*!' && <LICENSE sed -e's/^/ * /' | sed -e's/\\s+$//' && echo ' */' && browserify -p bundle-collapser/plugin -e lib/Insection -s com.one.insection) > insection.js"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "browserify": "^5.9.1",
     "bundle-collapser": "^1.1.0",
     "chance": "0.7.0",
+    "coveralls": "2.11.2",
     "istanbul": "^0.3.0",
     "jscs": "^1.8.1",
     "jshint": "*",
