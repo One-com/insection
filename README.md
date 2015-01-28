@@ -6,6 +6,8 @@ overlap with any given interval or point.
 The data structure is a red black tree augmented with hieracical data
 based on [redblack.js](https://github.com/scttnlsn/redblack.js).
 
+[![Build Status](https://travis-ci.org/One-com/insection.svg)](https://travis-ci.org/One-com/insection)
+
 ## Installation
 
 ### Node
