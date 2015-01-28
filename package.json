@@ -26,14 +26,14 @@
   },
   "homepage": "https://github.com/One-com/insection",
   "devDependencies": {
-    "browserify": "^5.9.1",
-    "bundle-collapser": "^1.1.0",
-    "chance": "0.7.0",
+    "browserify": "8.1.1",
+    "bundle-collapser": "1.1.0",
+    "chance": "0.7.3",
     "coveralls": "2.11.2",
-    "istanbul": "^0.3.0",
-    "jscs": "^1.8.1",
+    "istanbul": "0.3.0",
+    "jscs": "1.8.1",
     "jshint": "*",
-    "mocha": "2.0.1",
-    "unexpected": "5.1.4"
+    "mocha": "2.1.0",
+    "unexpected": "5.8.0"
   }
 }
