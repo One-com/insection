@@ -399,7 +399,7 @@ describe("Insection", function () {
             expect(insection.getEntries(3), 'to equal', insection.getEntries(Insection.interval('[', 3, 3, ']')));
         });
 
-        it("getEntries(3,4,'foo') is an alias for getEntries(Insection.interval('[',3,4,']'),'foo')", function () {
+        it("getEntries(3,4) is an alias for getEntries(Insection.interval('[',3,4,']'))", function () {
             expect(insection.getEntries(3, 4), 'to equal', insection.getEntries(Insection.interval('[', 3, 4, ']')));
         });
 
@@ -413,7 +413,7 @@ describe("Insection", function () {
             var start = interval.start;
             var end = interval.end;
             var endString = interval.endString;
-            it("getEntries(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ",'foo') is an alias for getEntries(" + interval.toString(true) + ",'foo')", function () {
+            it("getEntries(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ") is an alias for getEntries(" + interval.toString(true) + ",'foo')", function () {
                 expect(insection.getEntries(startString, start, end, endString), 'to equal', insection.getEntries(Insection.interval(startString, start, end, endString)));
             });
         });
@@ -428,6 +428,71 @@ describe("Insection", function () {
                 '[4;5] => [4;5]',
                 '[4;Infinity) => [4;Infinity)'
             ]);
+        });
+    });
+
+    describe('getGaps', function () {
+        var intervals;
+        beforeEach(function () {
+            intervals = [
+                Insection.interval('(', -Infinity, -900, ']'),
+                Insection.interval(-20, -10),
+                Insection.interval('(', 0, 4, ')'),
+                Insection.interval(2, 3),
+                Insection.interval(4, 5),
+                Insection.interval(6, 8),
+                Insection.interval(4, 3345),
+                Insection.interval('(', 5, 35, ')'),
+                Insection.interval('[', 4, Infinity, ')')
+            ];
+            intervals.forEach(function (interval, index) {
+                insection.add(interval, interval.toString());
+            });
+        });
+
+        it("getGaps(3) is an alias for getGaps(Insection.interval('[',3,3,']'))", function () {
+            expect(insection.getGaps(3), 'to equal', []);
+        });
+
+        it("getGaps(3,4) is an alias for getGaps(Insection.interval('[',3,4,']'))", function () {
+            expect(insection.getGaps(3, 4), 'to equal', insection.getGaps(Insection.interval('[', 3, 4, ']')));
+        });
+
+        [
+            Insection.interval('[', 3, 4, ']'),
+            Insection.interval('[', 3, 4, ')'),
+            Insection.interval('(', 3, 4, ']'),
+            Insection.interval('(', 3, 4, ')')
+        ].forEach(function (interval) {
+            var startString = interval.startString;
+            var start = interval.start;
+            var end = interval.end;
+            var endString = interval.endString;
+            it("getGaps(" + ["'" + startString + "'", start, end, "'" + endString + "'"].join(",") + ") is an alias for getGaps(" + interval.toString(true) + ",'foo')", function () {
+                expect(insection.getGaps(startString, start, end, endString), 'to equal', insection.getGaps(Insection.interval(startString, start, end, endString)));
+            });
+        });
+
+        it('returns the gaps that are not covered by any intervals in the insection between the endpoint of the given interval', function () {
+            expect(insection.getGaps(-1000, 1000).map(function (interval) {
+                return interval.toString();
+            }).sort(), 'to equal', [
+                '(-10;0]',
+                '(-900;-20)'
+            ]);
+        });
+
+        it('gaps does not intersect with any of the intervals in the insection structure', function () {
+            var queryInterval = Insection.interval('(', -Infinity, Infinity, ')');
+            expect(insection, 'to only contain valid gaps for interval', queryInterval);
+        });
+
+        it('returns an empty array if the insection contains no other gaps than points for the given interval', function () {
+            var insection = new Insection();
+            insection.add('(', 0, 3, ')', '0');
+            insection.add('(', 3, 6, ')', '1');
+            insection.add('(', 6, 9, ')', '2');
+            expect(insection.getGaps(0, 9), 'to be empty');
         });
     });
 });

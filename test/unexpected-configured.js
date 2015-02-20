@@ -76,6 +76,16 @@ module.exports = require('unexpected').clone()
     .addAssertion('Insection', '[not] to contain', function (expect, subject, interval) {
         expect(subject.contains(interval), '[not] to be true');
     })
+    .addAssertion('Insection', 'not to have any interval intersecting with', function (expect, subject, interval) {
+        expect(subject.getIntervals(interval), 'to be empty');
+    })
+    .addAssertion('Insection', 'to only contain valid gaps for interval', function (expect, subject, interval) {
+        this.errorMode = 'nested';
+        var gaps = subject.getGaps(interval);
+        gaps.forEach(function (gap) {
+            expect(subject, 'not to have any interval intersecting with', gap);
+        });
+    })
     .addAssertion('Interval', '[not] to intersect with', function (expect, subject, other) {
         expect(subject.intersect(other), '[not] to be true');
     })
