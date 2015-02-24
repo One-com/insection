@@ -487,6 +487,11 @@ describe("Insection", function () {
             expect(insection, 'to only contain valid gaps for interval', queryInterval);
         });
 
+        it('returns the entire interval if the given interval does not overlap with any intervals', function () {
+            var insection = new Insection();
+            expect(insection.getGaps(0, 10), 'to equal', [Insection.interval(0, 10)]);
+        });
+
         it('returns an empty array if the insection contains no gaps for the given interval', function () {
             var insection = new Insection();
             insection.add(0, 3, '0');
