@@ -487,12 +487,24 @@ describe("Insection", function () {
             expect(insection, 'to only contain valid gaps for interval', queryInterval);
         });
 
-        it('returns an empty array if the insection contains no other gaps than points for the given interval', function () {
+        it('returns an empty array if the insection contains no gaps for the given interval', function () {
             var insection = new Insection();
-            insection.add('(', 0, 3, ')', '0');
-            insection.add('(', 3, 6, ')', '1');
-            insection.add('(', 6, 9, ')', '2');
+            insection.add(0, 3, '0');
+            insection.add(3, 6, '1');
+            insection.add(6, 9, '2');
             expect(insection.getGaps(0, 9), 'to be empty');
+        });
+
+        it('success the readme example', function () {
+            var insection = new Insection();
+            insection.add(0, 2, '0');
+            insection.add(3, 6, '1');
+            insection.add('[', 5, 7, ')', '2');
+            insection.add('(', 7, 8, ']', '3');
+            insection.add(9, 10, '4');
+            expect(insection.getGaps(0, 10).map(function (interval) {
+                return interval.toString();
+            }).sort(), 'to equal', [ '(2;3)', '(8;9)', '[7;7]' ]);
         });
     });
 });
