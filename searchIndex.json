@@ -1,0 +1,38 @@
+[
+  {
+    "label": "add (api)",
+    "url": "/api/add/"
+  },
+  {
+    "label": "constructor (api)",
+    "url": "/api/constructor/"
+  },
+  {
+    "label": "contains (api)",
+    "url": "/api/contains/"
+  },
+  {
+    "label": "get (api)",
+    "url": "/api/get/"
+  },
+  {
+    "label": "getEntries (api)",
+    "url": "/api/getEntries/"
+  },
+  {
+    "label": "getIntervals (api)",
+    "url": "/api/getIntervals/"
+  },
+  {
+    "label": "interval (api)",
+    "url": "/api/interval/"
+  },
+  {
+    "label": "isEmpty (api)",
+    "url": "/api/isEmpty/"
+  },
+  {
+    "label": "remove (api)",
+    "url": "/api/remove/"
+  }
+]

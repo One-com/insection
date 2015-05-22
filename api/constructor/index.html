@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="../../static/normalize.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../static/main.css" type="text/css" media="screen" />
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../../static/bug-icon-black.ico">
+    <title>constructor</title>
+</head>
+<body class="sidebar-hidden has-sidebar">
+    <header>
+        <div class="logo-icon"></div>
+        <nav>
+            <ul>
+                <li class="menu-toggle-item">
+                    <button class="menu-toggle" onclick="toggleSidebar()"></button>
+                </li>
+                
+                <li class=""><a href="../..">Insection</a></li>
+                
+                
+                
+                <li class="active"><a href="../add">API</a></li>
+                
+            </ul>
+        </nav>
+        <div class="search" style="visibility: hidden">
+            <input id="search" placeholder="Search..." value="">
+            <div id="searchDropDown" class="dropDown">
+                <ul id="searchResults"></ul>
+            </div>
+        </div>
+    </header>
+
+<section id="api">
+    <nav id="api-menu" class="sidebar js-remember-scroll-position">
+    <ul>
+        
+        <li class="">
+            <a href="../add">add</a>
+        </li>
+        
+        <li class="active">
+            <a href="">constructor</a>
+        </li>
+        
+        <li class="">
+            <a href="../contains">contains</a>
+        </li>
+        
+        <li class="">
+            <a href="../get">get</a>
+        </li>
+        
+        <li class="">
+            <a href="../getEntries">getEntries</a>
+        </li>
+        
+        <li class="">
+            <a href="../getIntervals">getIntervals</a>
+        </li>
+        
+        <li class="">
+            <a href="../interval">interval</a>
+        </li>
+        
+        <li class="">
+            <a href="../isEmpty">isEmpty</a>
+        </li>
+        
+        <li class="">
+            <a href="../remove">remove</a>
+        </li>
+        
+    </ul>
+</nav>
+
+    <div class="main" tabindex="-1">
+        <div class="content">
+            <p>Creates a new insection instance.</p>
+<p>Signature:</p>
+<div class="code lang-javascript">
+  <div><span style="color: #a71d5d">new</span>&nbsp;Insection<span style="color: #000000">();</span>&nbsp;<span style="color: #a71d5d">=&gt;</span>&nbsp;<span style="color: #a71d5d">new</span>&nbsp;Insection<span style="color: #000000">(</span>defaultValueComparer<span style="color: #000000">);</span></div>
+  <div><span style="color: #a71d5d">new</span>&nbsp;Insection<span style="color: #000000">(</span>valueComparer<span style="color: #000000">);</span></div>
+</div><p>where <code>defaultValueComparer</code> is:</p>
+<div class="code lang-javascript">
+  <div><span style="color: #a71d5d">function</span>&nbsp;<span style="color: #000000">defaultValueComparer</span><span style="color: #000000">(</span>x<span style="color: #000000">,</span>&nbsp;y<span style="color: #000000">)</span>&nbsp;<span style="color: #000000">{</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">if</span>&nbsp;<span style="color: #000000">(</span>x&nbsp;<span style="color: #a71d5d">&lt;</span>&nbsp;y<span style="color: #000000">)</span>&nbsp;<span style="color: #000000">{</span>&nbsp;<span style="color: #a71d5d">return</span>&nbsp;<span style="color: #a71d5d">-</span><span style="color: #0086b3">1</span><span style="color: #000000">;</span>&nbsp;<span style="color: #000000">}</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">if</span>&nbsp;<span style="color: #000000">(</span>x&nbsp;<span style="color: #a71d5d">&gt;</span>&nbsp;y<span style="color: #000000">)</span>&nbsp;<span style="color: #000000">{</span>&nbsp;<span style="color: #a71d5d">return</span>&nbsp;<span style="color: #0086b3">1</span><span style="color: #000000">;</span>&nbsp;<span style="color: #000000">}</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">return</span>&nbsp;<span style="color: #0086b3">0</span><span style="color: #000000">;</span></div>
+  <div><span style="color: #000000">}</span></div>
+</div><p>Values is required to have a total order, if you values does not
+support the comparison operators you can specify a valueComparer.</p>
+
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    baseUrl = '../..';
+</script>
+<script type="text/javascript" src="../../static/toggleSidebar.js"></script>
+<script type="text/javascript" src="../../static/rememberScrollPosition.js"></script>
+<script type="text/javascript" src="../../static/focusMain.js"></script>
+<script type="text/javascript" src="../../static/search.js"></script>
+</body>
+</html>
+
