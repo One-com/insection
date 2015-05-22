@@ -20,6 +20,10 @@
     "url": "/api/getEntries/"
   },
   {
+    "label": "getGaps (api)",
+    "url": "/api/getGaps/"
+  },
+  {
     "label": "getIntervals (api)",
     "url": "/api/getIntervals/"
   },
