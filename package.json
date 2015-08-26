@@ -37,7 +37,7 @@
     "jshint": "*",
     "minimist": "1.1.1",
     "mocha": "2.1.0",
-    "unexpected": "7.0.1",
+    "unexpected": "^9.6.0",
     "unexpected-documentation-site-generator": "2.2.3"
   }
 }
