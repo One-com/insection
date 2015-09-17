@@ -507,9 +507,20 @@ describe("Insection", function () {
             insection.add('[', 5, 7, ')', '2');
             insection.add('(', 7, 8, ']', '3');
             insection.add(9, 10, '4');
-            expect(insection.getGaps(0, 10).map(function (interval) {
-                return interval.toString();
-            }).sort(), 'to equal', [ '(2;3)', '(8;9)', '[7;7]' ]);
+
+            expect(insection, 'when getting gaps between', '[0;10]',
+                   'to equal',
+                   ['(2;3)', '(8;9)', '[7;7]']);
+        });
+
+        it('find gaps between negative intervals', function () {
+            var insection = new Insection();
+            insection.add(-1, 'a');
+            insection.add(-10, -8, 'b');
+
+            expect(insection, 'when getting gaps between', '[-11;2]',
+                   'to equal',
+                   ['(-1;2]', '(-8;-1)', '[-11;-10)']);
         });
     });
 });

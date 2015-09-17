@@ -1,4 +1,5 @@
 var Insection = require('../lib/Insection.js');
+var Interval = require('../lib/Interval.js');
 
 module.exports = require('unexpected').clone()
     .addType({
@@ -63,9 +64,9 @@ module.exports = require('unexpected').clone()
         },
         inspect: function (interval, depth, output) {
             output.text(interval.startString || '[')
-                .number(interval.start)
+                .jsNumber(interval.start)
                 .text(';')
-                .number(interval.end)
+                .jsNumber(interval.end)
                 .text(interval.endString || ']');
             return output;
         }
@@ -129,4 +130,10 @@ module.exports = require('unexpected').clone()
 
             return path;
         })(root, 0, -1);
+    })
+    .addAssertion('Insection', 'when getting gaps between', function (expect, subject, interval) {
+        var gaps = subject.getGaps(Interval.fromString(interval)).map(function (interval) {
+            return interval.toString();
+        }).sort();
+        this.shift(gaps, 1);
     });
