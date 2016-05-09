@@ -9,6 +9,9 @@ h3,
 h4 {
   font-weight: normal;
 }
+h1 {
+  font-size: 1.6em;
+}
 h2 {
   font-size: 1.4em;
 }
@@ -19,15 +22,17 @@ h3 {
   margin-top: 0px;
   font-size: 1.6em;
   margin-bottom: 2px;
+  color: black;
 }
 #the-extensible-bdd-assertion-toolkit {
   margin-top: 0px;
   margin-bottom: 27px;
   font-size: 1.15em;
+  color: black;
 }
 nav ul {
   padding: 10px;
-  padding-right: 0;
+  margin: 0;
 }
 nav li {
   list-style: none;
@@ -37,6 +42,9 @@ nav a {
   text-decoration: none;
 }
 nav a:hover {
+  text-decoration: underline;
+}
+nav .active a {
   text-decoration: underline;
 }
 header {
@@ -78,7 +86,7 @@ header nav li {
 header nav li a {
   color: white;
   text-decoration: none;
-  padding: 10px;
+  padding: 10px 8px;
   display: inline-block;
 }
 header nav li a:hover {
@@ -102,7 +110,7 @@ header nav li.active a {
   top: 40px;
   right: auto;
   width: 330px;
-  padding: 0 20px;
+  padding: 30px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -120,14 +128,27 @@ header nav li.active a {
 .main:focus {
   outline: none;
 }
-nav li.active a {
-  text-decoration: underline;
-}
 .content {
   margin-top: 27px;
   margin-left: auto;
   margin-right: auto;
   width: 790px;
+}
+.content > h1 {
+  color: #8b8b8b;
+  margin: 0;
+  margin-bottom: 7px;
+  font-size: 1.5em;
+}
+.content > .declarations {
+  white-space: nowrap;
+  overflow-x: auto;
+  list-style: none;
+  padding: 0;
+  color: #646464;
+}
+.content img {
+  max-width: 100%;
 }
 .has-sidebar .main {
   left: 330px;
@@ -146,10 +167,10 @@ nav li.active a {
   line-height: 1.3;
 }
 code {
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   background-color: #f7f7f7;
-  padding: 2px;
+  padding: 0 3px;
   border-radius: 2px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .output,
 .code {
@@ -224,21 +245,34 @@ code {
   .has-sidebar .sidebar h3 {
     margin: 0;
     font-weight: bold;
-    padding: 9px 0;
+    padding: 0;
     padding-left: 20px;
+  }
+  .has-sidebar .sidebar h3:hover {
+    background-color: #1d1d1d;
+  }
+  .has-sidebar .sidebar h3.active {
+    background-color: #292929;
   }
   .has-sidebar .sidebar a {
     display: block;
     color: white;
     padding: 9px 0;
-    padding-left: 35px;
   }
   .has-sidebar .sidebar a:hover {
     text-decoration: none;
   }
-  .has-sidebar .sidebar li.active a {
-    background-color: #292929;
+  .has-sidebar .sidebar .active a {
     text-decoration: none;
+  }
+  .has-sidebar .sidebar li a {
+    padding-left: 35px;
+  }
+  .has-sidebar .sidebar li:hover {
+    background-color: #1d1d1d;
+  }
+  .has-sidebar .sidebar li.active {
+    background-color: #292929;
   }
   .has-sidebar .sidebar ul {
     margin: 0;
