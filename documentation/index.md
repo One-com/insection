@@ -21,16 +21,15 @@ based on [redblack.js](https://github.com/scttnlsn/redblack.js).
 
 ## Usage
 
-```js#evaluate:false
-var Insection = require('insection');
+```js
 var insection = new Insection();
 insection.add(0, 4, 'foo');
 insection.add('(', 2, 6, ']', 'bar');
-expect(insection.get(1, 5).sort(), 'to equal', ['foo', 'bar']);
+expect(insection.get(1, 5).sort(), 'to equal', ['bar', 'foo']);
 expect(insection.get(0, 2).sort(), 'to equal', ['foo']);
 insection.add('[', 2, Infinity, ')', 'baz');
 expect(insection.get('(', -Infinity, 2, ')').sort(), 'to equal', ['foo']);
-expect(insection.get(2).sort(), 'to equal', ['foo', 'baz']);
+expect(insection.get(2).sort(), 'to equal', ['baz', 'foo']);
 ```
 
 ## Installation

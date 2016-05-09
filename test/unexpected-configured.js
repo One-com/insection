@@ -71,26 +71,26 @@ module.exports = require('unexpected').clone()
             return output;
         }
     })
-    .addAssertion('Insection', '[not] to be empty', function (expect, subject) {
+    .addAssertion('<Insection> [not] to be empty', function (expect, subject) {
         expect(subject.isEmpty(), '[not] to be true');
     })
-    .addAssertion('Insection', '[not] to contain', function (expect, subject, interval) {
+    .addAssertion('<Insection> [not] to contain <Interval>', function (expect, subject, interval) {
         expect(subject.contains(interval), '[not] to be true');
     })
-    .addAssertion('Insection', 'not to have any interval intersecting with', function (expect, subject, interval) {
+    .addAssertion('<Insection> not to have any interval intersecting with <Interval>', function (expect, subject, interval) {
         expect(subject.getIntervals(interval), 'to be empty');
     })
-    .addAssertion('Insection', 'to only contain valid gaps for interval', function (expect, subject, interval) {
+    .addAssertion('<Insection> to only contain valid gaps for interval <Interval>', function (expect, subject, interval) {
         this.errorMode = 'nested';
         var gaps = subject.getGaps(interval);
         gaps.forEach(function (gap) {
             expect(subject, 'not to have any interval intersecting with', gap);
         });
     })
-    .addAssertion('Interval', '[not] to intersect with', function (expect, subject, other) {
+    .addAssertion('<Interval> [not] to intersect with <Interval>', function (expect, subject, other) {
         expect(subject.intersect(other), '[not] to be true');
     })
-    .addAssertion('Insection', 'to be balanced', function (expect, subject) {
+    .addAssertion('<Insection> to be balanced', function (expect, subject) {
         var root = subject.data.root;
 
         // Root node should always be black
@@ -131,7 +131,7 @@ module.exports = require('unexpected').clone()
             return path;
         })(root, 0, -1);
     })
-    .addAssertion('Insection', 'when getting gaps between', function (expect, subject, interval) {
+    .addAssertion('<Insection> when getting gaps between <string> <assertion>', function (expect, subject, interval) {
         var gaps = subject.getGaps(Interval.fromString(interval)).map(function (interval) {
             return interval.toString();
         }).sort();
