@@ -5,11 +5,11 @@
   "main": "lib/insection.js",
   "scripts": {
     "lint": "jshint lib && jshint test && jscs lib && jscs test",
-    "test": "mocha -i -g @slow",
+    "test": "mocha -i -g @slow ./documentation/**/*.md ./test/**/*.js && jscs test",
     "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot -i -g @slow",
     "travis": "npm test && npm run coverage && <coverage/lcov.info coveralls",
-    "generate-site": "node generate-site.js",
-    "update-examples": "node generate-site.js --update-examples",
+    "generate-site": "generate-site --require ./bootstrap-unexpected-markdown.js",
+    "update-examples": "generate-site --require ./bootstrap-unexpected-markdown.js --update-examples",
     "prepublish": "(echo '/*!' && <LICENSE sed -e's/^/ * /' | sed -e's/\\s+$//' && echo ' */' && browserify -p bundle-collapser/plugin -e lib/Insection -s com.one.insection) > insection.js"
   },
   "repository": {
@@ -37,7 +37,8 @@
     "jshint": "*",
     "minimist": "1.1.1",
     "mocha": "2.1.0",
-    "unexpected": "9.12.0",
-    "unexpected-documentation-site-generator": "2.2.3"
+    "unexpected": "10.13.2",
+    "unexpected-documentation-site-generator": "4.1.0",
+    "unexpected-markdown": "1.6.1"
   }
 }
