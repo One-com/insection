@@ -2,7 +2,7 @@
   "name": "insection",
   "version": "1.2.4",
   "description": "A data structure for storing number intervals",
-  "main": "lib/insection.js",
+  "main": "lib/Insection.js",
   "scripts": {
     "lint": "jshint lib && jshint test && jscs lib && jscs test",
     "test": "mocha -i -g @slow ./documentation/**/*.md ./test/**/*.js && jscs test",
